@@ -27,3 +27,4 @@ jobs:
       with:
     # Artifact name
         name: Artifact
+        path: build/libs/
