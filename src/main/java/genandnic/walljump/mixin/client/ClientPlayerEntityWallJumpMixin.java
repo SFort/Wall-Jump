@@ -178,15 +178,8 @@ public abstract class ClientPlayerEntityWallJumpMixin extends AbstractClientPlay
 
     private boolean canWallJump() {
 
-        if(WallJump.CONFIGURATION.useWallJump()) return true;
-
-        ItemStack stack = this.getEquippedStack(EquipmentSlot.FEET);
-        if(!stack.isEmpty()) {
-            Map<Enchantment, Integer> enchantments = EnchantmentHelper.get(stack);
-            return enchantments.containsKey(WallJump.WALLJUMP_ENCHANTMENT);
-        }
-
-        return false;
+        if(WallJump.CONFIGURATION.useWallJump()) {return true;}
+        else {return false;}
     }
 
 
@@ -288,31 +281,10 @@ public abstract class ClientPlayerEntityWallJumpMixin extends AbstractClientPlay
         this.playSound(soundType.getHitSound(), soundType.getVolume() * 0.25F, soundType.getPitch());
     }
 
-
     private void playBreakSound(BlockPos blockPos) {
 
         BlockState blockState = this.world.getBlockState(blockPos);
         BlockSoundGroup soundType = blockState.getBlock().getSoundGroup(blockState);
         this.playSound(soundType.getFallSound(), soundType.getVolume() * 0.5F, soundType.getPitch());
-    }
-
-
-    private void spawnWallParticle(BlockPos blockPos) {
-
-        BlockState blockState = this.world.getBlockState(blockPos);
-        if(blockState.getRenderType() != BlockRenderType.INVISIBLE) {
-
-            Vec3d pos = this.getPos();
-            Vec3i motion = this.getClingDirection().getVector();
-            this.world.addParticle(
-                    new BlockStateParticleEffect(ParticleTypes.BLOCK, blockState),
-                    pos.getX(),
-                    pos.getY(),
-                    pos.getZ(),
-                    motion.getX() * -1.0D,
-                    -1.0D,
-                    motion.getZ() * -1.0D
-            );
-        }
     }
 }
