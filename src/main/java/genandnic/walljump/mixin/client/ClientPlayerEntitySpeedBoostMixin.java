@@ -57,38 +57,16 @@ public abstract class ClientPlayerEntitySpeedBoostMixin extends AbstractClientPl
                 if (this.pitch < 30F)
                     this.setVelocity(motion.subtract(motion.multiply(0.05)));
 
-            } else if (this.isSprinting()) {
-
-                float elytraSpeedBoost = (float) WallJump.CONFIGURATION.elytraSpeedBoost() + (getEquipmentBoost(EquipmentSlot.CHEST) * 0.75F);
-                Vec3d boost = new Vec3d(look.getX(), look.getY() + 0.5, look.getZ()).normalize().multiply(elytraSpeedBoost);
-                if(motion.length() <= boost.length())
-                    this.setVelocity(motion.add(boost.multiply(0.05)));
-
-                if(boost.length() > 0.5)
-                    this.world.addParticle(ParticleTypes.FIREWORK, pos.getX(), pos.getY(), pos.getZ(), 0, 0, 0);
-
             }
 
         } else if(this.isSprinting()) {
 
-            float sprintSpeedBoost = (float) WallJump.CONFIGURATION.sprintSpeedBoost() + (getEquipmentBoost(EquipmentSlot.FEET) * 0.375F);
+            float sprintSpeedBoost = (float) WallJump.CONFIGURATION.sprintSpeedBoost() * 0.375F);
             if(!this.onGround)
                 sprintSpeedBoost /= 3.125;
 
             Vec3d boost = new Vec3d(look.getX(), 0.0, look.getZ()).multiply(sprintSpeedBoost * 0.125F);
             this.setVelocity(motion.add(boost));
         }
-    }
-
-    private int getEquipmentBoost(EquipmentSlot slot) {
-
-        ItemStack stack = this.getEquippedStack(slot);
-        if (!stack.isEmpty()) {
-            Map<Enchantment, Integer> enchantments = EnchantmentHelper.get(stack);
-            if (enchantments.containsKey(WallJump.SPEEDBOOST_ENCHANTMENT))
-                return enchantments.get(WallJump.SPEEDBOOST_ENCHANTMENT);
-        }
-
-        return 0;
     }
 }
