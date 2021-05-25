@@ -3,7 +3,7 @@ import org.aeonbits.owner.Accessible;
 
 public interface WallJumpConfig extends Accessible {
 
-    @DefaultValue("false")
+    @DefaultValue("true")
     boolean allowReClinging();
 
     @DefaultValue("false")
@@ -27,7 +27,7 @@ public interface WallJumpConfig extends Accessible {
     @DefaultValue("true")
     boolean stepAssist();
 
-    @DefaultValue("false")
+    @DefaultValue("true")
     boolean useDoubleJump();
 
     @DefaultValue("true")
