@@ -102,7 +102,6 @@ public abstract class ClientPlayerEntityWallJumpMixin extends AbstractClientPlay
                 this.clingZ = this.getZ();
 
                 this.playHitSound(this.getWallPos());
-                this.spawnWallParticle(this.getWallPos());
             }
 
             return;
@@ -151,12 +150,9 @@ public abstract class ClientPlayerEntityWallJumpMixin extends AbstractClientPlay
         } else if(motionY < -0.6) {
 
             motionY = motionY + 0.2;
-            this.spawnWallParticle(this.getWallPos());
-
         } else if(this.ticksWallClinged++ > WallJump.CONFIGURATION.wallSlideDelay()) {
 
             motionY = -0.1;
-            this.spawnWallParticle(this.getWallPos());
 
         } else {
 
@@ -270,7 +266,6 @@ public abstract class ClientPlayerEntityWallJumpMixin extends AbstractClientPlay
 
         this.lastJumpY = this.getY();
         this.playBreakSound(this.getWallPos());
-        this.spawnWallParticle(this.getWallPos());
     }
 
 
