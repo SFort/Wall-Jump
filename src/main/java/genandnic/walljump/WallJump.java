@@ -1,8 +1,5 @@
 package genandnic.walljump;
 
-import genandnic.walljump.enchantment.DoubleJumpEnchantment;
-import genandnic.walljump.enchantment.SpeedBoostEnchantment;
-import genandnic.walljump.enchantment.WallJumpEnchantment;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.fabricmc.loader.api.FabricLoader;
