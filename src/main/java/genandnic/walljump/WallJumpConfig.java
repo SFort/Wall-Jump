@@ -12,9 +12,6 @@ public interface WallJumpConfig extends Accessible {
     @DefaultValue("0.0")
     double elytraSpeedBoost();
 
-    @DefaultValue("true")
-    boolean enableEnchantments();
-
     @DefaultValue("0.8")
     double exhaustionWallJump();
 
