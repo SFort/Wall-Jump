@@ -9,9 +9,6 @@ public interface WallJumpConfig extends Accessible {
     @DefaultValue("false")
     boolean autoRotation();
 
-    @DefaultValue("0.0")
-    double elytraSpeedBoost();
-
     @DefaultValue("0.8")
     double exhaustionWallJump();
 
@@ -20,9 +17,6 @@ public interface WallJumpConfig extends Accessible {
 
     @DefaultValue("true")
     boolean playFallSound();
-
-    @DefaultValue("0.0")
-    double sprintSpeedBoost();
 
     @DefaultValue("true")
     boolean stepAssist();
