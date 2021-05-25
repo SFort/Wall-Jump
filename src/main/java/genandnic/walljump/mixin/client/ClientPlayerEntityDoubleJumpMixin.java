@@ -101,14 +101,7 @@ public abstract class ClientPlayerEntityDoubleJumpMixin extends AbstractClientPl
         int jumpCount = 0;
         if(WallJump.CONFIGURATION.useDoubleJump())
             jumpCount += 1;
-
-        ItemStack stack = this.getEquippedStack(EquipmentSlot.FEET);
-        if(!stack.isEmpty()) {
-            Map<Enchantment, Integer> enchantments = EnchantmentHelper.get(stack);
-            if(enchantments.containsKey(WallJump.DOUBLEJUMP_ENCHANTMENT))
-                jumpCount += enchantments.get(WallJump.DOUBLEJUMP_ENCHANTMENT);
-        }
-
+        
         return jumpCount;
     }
 }
