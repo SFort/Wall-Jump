@@ -9,8 +9,7 @@
     "client.ClientWorldFallingSoundMixin",
     "client.ClientPlayerEntityWallJumpMixin",
     "client.ClientPlayerEntityDoubleJumpMixin",
-    "client.ClientPlayerEntityMiscellaneousMixin",
-    "client.ClientPlayerEntitySpeedBoostMixin"
+    "client.ClientPlayerEntityMiscellaneousMixin"
   ],
   "injectors": {
     "defaultRequire": 1
