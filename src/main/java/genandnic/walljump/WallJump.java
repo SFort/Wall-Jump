@@ -25,10 +25,6 @@ import java.util.Properties;
 public class WallJump implements ModInitializer {
 	public static final Logger LOGGER = LogManager.getLogger("WallJump");
 
-	public static Enchantment WALLJUMP_ENCHANTMENT;
-	public static Enchantment DOUBLEJUMP_ENCHANTMENT;
-	public static Enchantment SPEEDBOOST_ENCHANTMENT;
-
 	public static WallJumpConfig CONFIGURATION;
 
 
@@ -64,43 +60,6 @@ public class WallJump implements ModInitializer {
 			LOGGER.error("[Wall Jump] failed to load config file !");
 			e.printStackTrace();
 		}
-
-		// Enchantments
-		WALLJUMP_ENCHANTMENT = Registry.register(
-				Registry.ENCHANTMENT,
-				new Identifier("walljump", "walljump"),
-				new WallJumpEnchantment(
-						Enchantment.Rarity.UNCOMMON,
-						EnchantmentTarget.ARMOR_FEET,
-						new EquipmentSlot[] {
-								EquipmentSlot.FEET
-						}
-				)
-		);
-
-		DOUBLEJUMP_ENCHANTMENT = Registry.register(
-				Registry.ENCHANTMENT,
-				new Identifier("walljump", "doublejump"),
-				new DoubleJumpEnchantment(
-						Enchantment.Rarity.RARE,
-						EnchantmentTarget.ARMOR_FEET,
-						new EquipmentSlot[] {
-								EquipmentSlot.FEET
-						}
-				)
-		);
-
-		SPEEDBOOST_ENCHANTMENT = Registry.register(
-				Registry.ENCHANTMENT,
-				new Identifier("walljump", "speedboost"),
-				new SpeedBoostEnchantment(
-						Enchantment.Rarity.RARE,
-						EnchantmentTarget.ARMOR_FEET,
-						new EquipmentSlot[] {
-								EquipmentSlot.FEET
-						}
-				)
-		);
 
 		// Packets
 		ServerSidePacketRegistry.INSTANCE.register(FALL_DISTANCE_PACKET_ID, ((packetContext, packetByteBuf) -> {
