@@ -4,22 +4,15 @@ import com.mojang.authlib.GameProfile;
 import genandnic.walljump.WallJump;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.input.Input;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particle.BlockStateParticleEffect;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.math.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -28,16 +21,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 @Mixin(ClientPlayerEntity.class)
 public abstract class ClientPlayerEntityWallJumpMixin extends AbstractClientPlayerEntity {
 
     @Shadow public abstract boolean isRiding();
-
     @Shadow public abstract float getYaw(float tickDelta);
-
     @Shadow public Input input;
 
     public int ticksWallClinged;
@@ -61,11 +51,8 @@ public abstract class ClientPlayerEntityWallJumpMixin extends AbstractClientPlay
 
 
     private void doWallJump() {
-
-        if(!this.canWallJump()) return;
-
         if(this.onGround
-                || this.abilities.flying
+                || this.getAbilities().flying
                 || !this.world.getFluidState(this.getBlockPos()).isEmpty()
                 || this.isRiding()
         ) {
@@ -91,12 +78,6 @@ public abstract class ClientPlayerEntityWallJumpMixin extends AbstractClientPlay
 
                 this.limbDistance = 2.5F;
                 this.lastLimbDistance = 2.5F;
-
-                if (WallJump.CONFIGURATION.autoRotation()) {
-                    this.yaw = this.getClingDirection().getOpposite().asRotation();
-                    this.prevYaw = this.yaw;
-                }
-
                 this.ticksWallClinged = 1;
                 this.clingX = this.getX();
                 this.clingZ = this.getZ();
@@ -127,66 +108,34 @@ public abstract class ClientPlayerEntityWallJumpMixin extends AbstractClientPlay
                 passedData.writeBoolean(true);
                 ClientSidePacketRegistry.INSTANCE.sendToServer(WallJump.WALL_JUMP_PACKET_ID, passedData);
 
-                this.wallJump((float) WallJump.CONFIGURATION.wallJumpHeight());
+                this.wallJump(0.55F);
                 this.staleWalls = new HashSet<>(this.walls);
             }
 
             return;
         }
-
-        if(WallJump.CONFIGURATION.autoRotation()) {
-            this.yaw = this.getClingDirection().getOpposite().asRotation();
-            this.prevYaw = this.yaw;
-        }
-
         this.setPos(this.clingX, this.getY(), this.clingZ);
-
         double motionY = this.getVelocity().getY();
-
         if(motionY > 0.0) {
-
             motionY = 0.0;
-
         } else if(motionY < -0.6) {
-
             motionY = motionY + 0.2;
-        } else if(this.ticksWallClinged++ > WallJump.CONFIGURATION.wallSlideDelay()) {
-
+        } else if(this.ticksWallClinged++ > 15) {
             motionY = -0.1;
-
         } else {
-
             motionY = 0.0;
-        }
-
-        if(this.fallDistance > 2) {
-
-            this.fallDistance = 0;
-
-            PacketByteBuf passedData = new PacketByteBuf(Unpooled.buffer());
-            passedData.writeFloat((float) (motionY * motionY * 8));
-            ClientSidePacketRegistry.INSTANCE.sendToServer(WallJump.FALL_DISTANCE_PACKET_ID, passedData);
         }
 
         this.setVelocity(0.0, motionY, 0.0);
     }
 
 
-    private boolean canWallJump() {
-
-        if(WallJump.CONFIGURATION.useWallJump()) {return true;}
-        else {return false;}
-    }
-
-
     private boolean canWallCling() {
         if(this.isClimbing() || this.getVelocity().getY() > 0.1 || this.getHungerManager().getFoodLevel() < 1)
             return false;
-
-        if(!this.world.doesNotCollide(this.getBoundingBox().offset(0, -0.8, 0)))
+        if(!this.world.isSpaceEmpty(this.getBoundingBox().offset(0, -0.8, 0)))
             return false;
-
-        if(WallJump.CONFIGURATION.allowReClinging() || this.getY() < this.lastJumpY - 1)
+        if(this.getY() < this.lastJumpY - 1)
             return true;
 
         return !this.staleWalls.containsAll(this.walls);
@@ -219,8 +168,7 @@ public abstract class ClientPlayerEntityWallJumpMixin extends AbstractClientPlay
 
         for (Box axis : axes) {
             direction = Direction.fromHorizontal(i++);
-
-            if(!this.world.doesNotCollide(axis)) {
+            if(!this.world.isSpaceEmpty(axis)) {
                this.walls.add(direction);
                this.horizontalCollision = true;
             }

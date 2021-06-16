@@ -1,15 +1,9 @@
 {
   "required": true,
   "package": "genandnic.walljump.mixin",
-  "compatibilityLevel": "JAVA_8",
-  "mixins": [
-    "PlayerEntityFallDistanceMixin"
-  ],
+  "compatibilityLevel": "JAVA_16",
   "client": [
-    "client.ClientWorldFallingSoundMixin",
-    "client.ClientPlayerEntityWallJumpMixin",
-    "client.ClientPlayerEntityDoubleJumpMixin",
-    "client.ClientPlayerEntityMiscellaneousMixin"
+    "client.ClientPlayerEntityWallJumpMixin"
   ],
   "injectors": {
     "defaultRequire": 1

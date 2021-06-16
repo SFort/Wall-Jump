@@ -1,4 +1,4 @@
-# Wall-Jump for Fabric
+# Wall-Jump Stripped for Fabric
 
-Jump from wall to wall!
-https://www.curseforge.com/minecraft/mc-mods/wall-jump
+It's the wall jump mod
+but stripped of non-wall-jump features
